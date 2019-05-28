@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.orange.minip.DataObject.Information;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.ResultType;
 
 public interface InformationMapper {
     /**

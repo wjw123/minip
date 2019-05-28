@@ -51,4 +51,31 @@ public class TableController {
        return response;
     }
 
+    /***
+     * 获取用户所创建的所有表信息
+     * @param openId 用户的ID
+     * @return
+     */
+    @RequestMapping(value = "/getAllCreattable",method = RequestMethod.GET)
+    public Response getAllCreattable(Integer openId){
+        Response response=new Response();
+        response.setCode(0);
+        response.setMsg("成功获取到用户所创建的所有表信息");
+        response.setObject(tableService.getAllCreatetable(openId));
+        return response;
+    }
+
+    /***
+     * 获取到用户所参与的所有表信息
+     * @param openId
+     * @return
+     */
+    @RequestMapping(value = "/getAllParttable",method = RequestMethod.GET)
+    public Response getpartTable(Integer openId){
+        Response response=new Response();
+        response.setCode(0);
+        response.setMsg("成功获取到用户所参与的所有表信息");
+        response.setObject(tableService.getAllParttable(openId));
+        return response;
+    }
 }

@@ -7,6 +7,8 @@ package com.orange.minip.Service;/*
 
 import com.orange.minip.DataObject.CreatTable;
 
+import java.util.List;
+
 public interface TableService {
     /**
      * 保存creattable相关数据
@@ -21,4 +23,19 @@ public interface TableService {
      * @return
      */
     int getCount(Integer tableId);
+
+    /***
+     *  获取用户创建的所有的表信息
+     * @param openId
+     * @return
+     */
+    List<CreatTable>getAllCreatetable(Integer openId);
+
+
+    /***
+     * 获取用户所参与的所有表格
+     * @param openId
+     * @return
+     */
+    List<CreatTable>getAllParttable(Integer openId);
 }

@@ -11,6 +11,8 @@ import com.orange.minip.Service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TableServiceImpl implements TableService {
 
@@ -35,5 +37,25 @@ public class TableServiceImpl implements TableService {
     @Override
     public int getCount(Integer tableId) {
         return tableMapper.getCount(tableId);
+    }
+
+    /***
+     * 获取用户所创建的所有表信息
+     * @param openId
+     * @return
+     */
+    @Override
+    public List<CreatTable> getAllCreatetable(Integer openId) {
+        return tableMapper.getAllCreateTable(openId);
+    }
+
+    @Override
+    /***
+     * 获取用户所参与的所有表信息
+     * @param openId
+     * @return
+     */
+    public List<CreatTable> getAllParttable(Integer openId) {
+        return tableMapper.getAllPartTable(openId);
     }
 }
