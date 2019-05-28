@@ -9,7 +9,7 @@ import com.orange.minip.DataObject.CreatTable;
 
 import java.util.List;
 
-public interface TableService {
+public interface CreatTableService {
     /**
      * 保存creattable相关数据
      * @param creatTable
@@ -37,5 +37,12 @@ public interface TableService {
      * @param openId
      * @return
      */
-    List<CreatTable>getAllParttable(Integer openId);
+    List<CreatTable> getAllParttable(Integer openId);
+
+    /**
+     * 获取table所要填写内容
+     * @param tableId
+     * @return
+     */
+    String getContent(Integer tableId);
 }

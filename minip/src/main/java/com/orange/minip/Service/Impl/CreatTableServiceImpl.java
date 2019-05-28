@@ -6,18 +6,18 @@ package com.orange.minip.Service.Impl;/*
  */
 
 import com.orange.minip.DataObject.CreatTable;
-import com.orange.minip.Mapper.TableMapper;
-import com.orange.minip.Service.TableService;
+import com.orange.minip.Mapper.CreatTableMapper;
+import com.orange.minip.Service.CreatTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TableServiceImpl implements TableService {
+public class CreatTableServiceImpl implements CreatTableService {
 
     @Autowired
-    private TableMapper tableMapper;
+    private CreatTableMapper creatTableMapper;
 
     /**
      * 保存table信息并返回tableId
@@ -26,7 +26,7 @@ public class TableServiceImpl implements TableService {
      */
     @Override
     public int saveTable(CreatTable creatTable) {
-        return tableMapper.savaTable(creatTable);
+        return creatTableMapper.savaTable(creatTable);
     }
 
     /**
@@ -36,7 +36,12 @@ public class TableServiceImpl implements TableService {
      */
     @Override
     public int getCount(Integer tableId) {
-        return tableMapper.getCount(tableId);
+        return creatTableMapper.getCount(tableId);
+    }
+
+    @Override
+    public String getContent(Integer tableId) {
+       return creatTableMapper.getTable(tableId);
     }
 
     /***
@@ -46,7 +51,7 @@ public class TableServiceImpl implements TableService {
      */
     @Override
     public List<CreatTable> getAllCreatetable(Integer openId) {
-        return tableMapper.getAllCreateTable(openId);
+        return creatTableMapper.getAllCreateTable(openId);
     }
 
     @Override
@@ -56,6 +61,6 @@ public class TableServiceImpl implements TableService {
      * @return
      */
     public List<CreatTable> getAllParttable(Integer openId) {
-        return tableMapper.getAllPartTable(openId);
+        return creatTableMapper.getAllPartTable(openId);
     }
 }

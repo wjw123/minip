@@ -14,13 +14,14 @@ import java.util.List;
 @Mapper
 @CacheNamespace(size=512)//定义在该命名空间内使用内置缓存，最大值为512个对象引用，
 //缓存内省刷新时间为默认3600000ms，线程安全
-public interface TableMapper {
+public interface CreatTableMapper {
+
     /**
-     * 保存table相关数据:标题，截止日期，发起人openid，
+     * 保存table相关数据:标题，截止日期，发起人openid,表格信息，
      * @param creatTable
      * @return
      */
-    @Insert("insert into creattable(table_title,table_deadline,table_creatopenid,table_content) " +
+    @Insert("insert into creat_table(table_title,table_deadline,table_creatopenid,table_content) " +
             "values(#{tableTitle},#{tableDeadline},#{tableCreatopenid},#{tableContent})")
     @Options(flushCache = Options.FlushCachePolicy.TRUE,timeout =10000,
             useGeneratedKeys = true, keyProperty = "tableId",keyColumn="table_id")
@@ -65,5 +66,10 @@ public interface TableMapper {
             @Result(property = "tableCreatopenid", column = "table_creatopenid",javaType = String.class),
             @Result(property = "tableContent", column = "table_content",javaType = String.class)})
     List<CreatTable>getAllPartTable(Integer openId);
+
+
+    @Select("select table_content as 'tableContent' from creat_table where table_id=#{tableId}")
+    String getTable(Integer tableId);
+
 
 }

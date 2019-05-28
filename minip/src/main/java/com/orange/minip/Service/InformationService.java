@@ -9,17 +9,11 @@ import com.orange.minip.DataObject.Information;
 
 public interface InformationService {
     /**
-     * 保存information中除info之外的信息
-     * @param tableId
-     * @param partOpenid
+     * 保存information
+     * @param information
      * @return
      */
-    int saveInformation(Integer tableId,String partOpenid);
+    int saveInformation(Information information);
 
-    /**
-     * 保存info到information
-     * @param info
-     * @param infoId
-     */
-    void saveInfo(String info,Long infoId);
+
 }

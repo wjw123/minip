@@ -9,20 +9,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.orange.minip.DataObject.Information;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.ResultType;
+import org.apache.ibatis.annotations.*;
 
+@Mapper
+@CacheNamespace(size = 512)
 public interface InformationMapper {
     /**
-     * 将除了info之外的信息存入information表中
-     * @param tableId
-     * @param partOpenid
+     * 将信息存入information表中
+     * @param information
+     * @return
      */
-    @Insert("insert into information(table_id,part_openid) values (#{tableId},#{partOpenid})")
+    @Insert("insert into information(table_id,part_openid,info) values (#{tableId},#{partOpenid},#{info})")
     @Options(flushCache=Options.FlushCachePolicy.TRUE,timeout = 10000,
             useGeneratedKeys =true,keyProperty = "infoId",keyColumn = "info_id")
-    int savaInfomation(Integer tableId,String partOpenid);
+    int savaInfomation(Information information);
 
-    @Insert("update information set info=#{info} where info_id=#{infoId}")
-    @Options(flushCache =Options.FlushCachePolicy.TRUE,timeout = 10000)
-    void saveInfo(String info,Long infoId);
 }

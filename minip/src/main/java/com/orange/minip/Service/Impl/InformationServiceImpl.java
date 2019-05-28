@@ -17,12 +17,8 @@ public class InformationServiceImpl implements InformationService {
     @Autowired
     private InformationMapper  informationMapper;
     @Override
-    public int saveInformation(Integer tableId,String partOpenid) {
-        return informationMapper.savaInfomation(tableId,partOpenid);
+    public int saveInformation(Information information ) {
+        return informationMapper.savaInfomation(information);
     }
 
-    @Override
-    public void saveInfo(String info, Long infoId) {
-        informationMapper.saveInfo(info,infoId);
-    }
 }
