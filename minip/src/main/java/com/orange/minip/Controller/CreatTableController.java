@@ -82,29 +82,29 @@ public class CreatTableController {
 
     /***
      * 获取用户所创建的所有表信息
-     * @param openId 用户的ID
+     * @param tableCreatopenid 用户的ID
      * @return
      */
     @RequestMapping(value = "/getAllCreattable",method = RequestMethod.GET)
-    public Response getAllCreattable(Integer openId){
+    public Response getAllCreattable(String tableCreatopenid){
         Response response=new Response();
         response.setCode(0);
         response.setMsg("成功获取到用户所创建的所有表信息");
-        response.setObject(creatTableService.getAllCreatetable(openId));
+        response.setObject(creatTableService.getAllCreatetable(tableCreatopenid));
         return response;
     }
 
     /***
      * 获取到用户所参与的所有表信息
-     * @param openId
+     * @param tableCreatopenid
      * @return
      */
     @RequestMapping(value = "/getAllParttable",method = RequestMethod.GET)
-    public Response getpartTable(Integer openId){
+    public Response getpartTable(String tableCreatopenid){
         Response response=new Response();
         response.setCode(0);
         response.setMsg("成功获取到用户所参与的所有表信息");
-        response.setObject(creatTableService.getAllParttable(openId));
+        response.setObject(creatTableService.getAllParttable(tableCreatopenid));
         return response;
     }
 }

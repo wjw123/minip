@@ -38,23 +38,23 @@ public interface CreatTableMapper {
 
     /***
      * 获取某一个用户所创建的所有表信息
-     * @param openId 创建用户信息
+     * @param tableCreatopenid 创建用户信息
      * @return
      */
     @Select("select * from creattable where table_creatopenid=#{openId}")
     @Options(flushCache = Options.FlushCachePolicy.TRUE,timeout=10000)
     //需要设置Results注解来实现字段名和属性名的一一对应
-    @Results({ @Result(property = "tableId", column = "table_id", javaType=Integer.class),
+    @Results({@Result(property = "tableId", column = "table_id", javaType=Integer.class),
             @Result(property = "tableTitle", column = "table_title",javaType = String.class),
             @Result(property = "tableDeadline", column = "table_deadline",javaType = String.class),
             @Result(property = "tableCreatopenid", column = "table_creatopenid",javaType = String.class),
             @Result(property = "tableContent", column = "table_content",javaType = String.class)})
-    List<CreatTable>getAllCreateTable(Integer openId);
+    List<CreatTable>getAllCreateTable(String tableCreatopenid);
 
 
     /***
      * 获取某一用户所参与所有的表的信息
-     * @param openId 参与用户的OpenId
+     * @param tableCreatopenid 参与用户的OpenId
      * @return
      */
     @Select("select * from creattable where table_id in (select table_id from information where part_openid=#{openid})")
@@ -65,7 +65,7 @@ public interface CreatTableMapper {
             @Result(property = "tableDeadline", column = "table_deadline",javaType = String.class),
             @Result(property = "tableCreatopenid", column = "table_creatopenid",javaType = String.class),
             @Result(property = "tableContent", column = "table_content",javaType = String.class)})
-    List<CreatTable>getAllPartTable(Integer openId);
+    List<CreatTable>getAllPartTable(String tableCreatopenid);
 
 
     @Select("select table_content as 'tableContent' from creat_table where table_id=#{tableId}")

@@ -50,8 +50,8 @@ public class CreatTableServiceImpl implements CreatTableService {
      * @return
      */
     @Override
-    public List<CreatTable> getAllCreatetable(Integer openId) {
-        return creatTableMapper.getAllCreateTable(openId);
+    public List<CreatTable> getAllCreatetable(String tableCreatopenid) {
+        return creatTableMapper.getAllCreateTable(tableCreatopenid);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CreatTableServiceImpl implements CreatTableService {
      * @param openId
      * @return
      */
-    public List<CreatTable> getAllParttable(Integer openId) {
-        return creatTableMapper.getAllPartTable(openId);
+    public List<CreatTable> getAllParttable(String tableCreatopenid) {
+        return creatTableMapper.getAllPartTable(tableCreatopenid);
     }
 }

@@ -29,15 +29,15 @@ public interface CreatTableService {
      * @param openId
      * @return
      */
-    List<CreatTable>getAllCreatetable(Integer openId);
+    List<CreatTable>getAllCreatetable(String tableCreatopenid);
 
 
     /***
      * 获取用户所参与的所有表格
-     * @param openId
+     * @param tableCreatopenid
      * @return
      */
-    List<CreatTable> getAllParttable(Integer openId);
+    List<CreatTable> getAllParttable(String tableCreatopenid);
 
     /**
      * 获取table所要填写内容
