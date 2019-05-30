@@ -100,11 +100,13 @@ public class CreatTableController {
      * @return
      */
     @RequestMapping(value = "/getAllParttable",method = RequestMethod.GET)
-    public Response getpartTable(String tableCreatopenid){
+    public Response getpartTable(String partOpenid){
         Response response=new Response();
         response.setCode(0);
         response.setMsg("成功获取到用户所参与的所有表信息");
-        response.setObject(creatTableService.getAllParttable(tableCreatopenid));
+        response.setObject(creatTableService.getAllParttable(partOpenid));
         return response;
     }
+
+
 }

@@ -11,6 +11,8 @@ import com.orange.minip.Service.InformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class InformationServiceImpl implements InformationService {
 
@@ -19,6 +21,16 @@ public class InformationServiceImpl implements InformationService {
     @Override
     public int saveInformation(Information information ) {
         return informationMapper.savaInfomation(information);
+    }
+
+    @Override
+    public String getInfo(Integer tableId, String partOpenid) {
+        return informationMapper.getInfo(tableId,partOpenid);
+    }
+
+    @Override
+    public List<String> getInfos(Integer tableId) {
+        return informationMapper.getInfos(tableId);
     }
 
 }

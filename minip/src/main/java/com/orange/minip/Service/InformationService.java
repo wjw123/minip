@@ -7,6 +7,8 @@ package com.orange.minip.Service;/*
 
 import com.orange.minip.DataObject.Information;
 
+import java.util.List;
+
 public interface InformationService {
     /**
      * 保存information
@@ -16,4 +18,18 @@ public interface InformationService {
     int saveInformation(Information information);
 
 
+    /***
+     * 获取用户的填表信息
+     * @param tableId 表格ID
+     * @param partOpenid 用户ID
+     * @return
+     */
+    String getInfo(Integer tableId,String partOpenid);
+
+    /***
+     * 获取所有用户的填表信息
+     * @param tableId 表格ID
+     * @return
+     */
+    List<String> getInfos(Integer tableId);
 }

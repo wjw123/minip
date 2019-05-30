@@ -41,7 +41,7 @@ public interface CreatTableMapper {
      * @param tableCreatopenid 创建用户信息
      * @return
      */
-    @Select("select * from creattable where table_creatopenid=#{openId}")
+    @Select("select * from creat_table where table_creatopenid=#{openId}")
     @Options(flushCache = Options.FlushCachePolicy.TRUE,timeout=10000)
     //需要设置Results注解来实现字段名和属性名的一一对应
     @Results({@Result(property = "tableId", column = "table_id", javaType=Integer.class),
@@ -57,7 +57,7 @@ public interface CreatTableMapper {
      * @param tableCreatopenid 参与用户的OpenId
      * @return
      */
-    @Select("select * from creattable where table_id in (select table_id from information where part_openid=#{openid})")
+    @Select("select * from creat_table where table_id in (select table_id from information where part_openid=#{openid})")
     @Options(flushCache = Options.FlushCachePolicy.TRUE,timeout=10000)
     //需要设置Results注解来实现字段名和属性名的一一对应
     @Results({@Result(property = "tableId", column = "table_id", javaType=Integer.class),

@@ -46,21 +46,29 @@ public class CreatTableServiceImpl implements CreatTableService {
 
     /***
      * 获取用户所创建的所有表信息
-     * @param openId
+     * @param tableCreatopenid
      * @return
      */
     @Override
-    public List<CreatTable> getAllCreatetable(String tableCreatopenid) {
-        return creatTableMapper.getAllCreateTable(tableCreatopenid);
+    public List<CreatTable> getAllCreatetable(String tableCreatopenid){
+        List<CreatTable> creatTable=creatTableMapper.getAllCreateTable(tableCreatopenid);
+        for (CreatTable creatTable1:creatTable){
+            creatTable1.setTableContent(creatTable1.getTableContent().substring(1,creatTable1.getTableContent().length()-1));
+        }
+        return creatTable;
     }
 
     @Override
     /***
      * 获取用户所参与的所有表信息
-     * @param openId
+     * @param tableCreatopenid
      * @return
      */
     public List<CreatTable> getAllParttable(String tableCreatopenid) {
-        return creatTableMapper.getAllPartTable(tableCreatopenid);
+        List<CreatTable> creatTable=creatTableMapper.getAllPartTable(tableCreatopenid);
+        for (CreatTable creatTable1:creatTable) {
+            creatTable1.setTableContent(creatTable1.getTableContent().substring(1,creatTable1.getTableContent().length()-1));
+        }
+        return creatTable;
     }
 }
