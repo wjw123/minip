@@ -28,7 +28,7 @@ public class ExportExcelUtil {
         titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         titleStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
         Font titleFont=workbook.createFont();
-        titleFont.setFontHeightInPoints((short)14);
+        titleFont.setFontHeightInPoints((short)15);
         titleFont.setFontName("黑体");
         titleStyle.setFont(titleFont);
 
