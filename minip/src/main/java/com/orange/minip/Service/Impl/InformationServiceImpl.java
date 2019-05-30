@@ -11,6 +11,8 @@ import com.orange.minip.Service.InformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class InformationServiceImpl implements InformationService {
 
@@ -21,4 +23,8 @@ public class InformationServiceImpl implements InformationService {
         return informationMapper.savaInfomation(information);
     }
 
+    @Override
+    public ArrayList<String> getAllInfo(Integer tableId) {
+        return informationMapper.findInfoByTableId(tableId);
+    }
 }

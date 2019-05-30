@@ -5,9 +5,12 @@ package com.orange.minip.Mapper;/*
  *@creatTime 2019年05月24日11:45:00
  */
 
-import com.alibaba.fastjson.JSONObject;
+
 import com.orange.minip.DataObject.Information;
 import org.apache.ibatis.annotations.*;
+
+import java.util.ArrayList;
+
 
 @Mapper
 @CacheNamespace(size = 512)
@@ -21,6 +24,9 @@ public interface InformationMapper {
     @Options(flushCache=Options.FlushCachePolicy.TRUE,timeout = 10000,
             useGeneratedKeys =true,keyProperty = "infoId",keyColumn = "info_id")
     int savaInfomation(Information information);
+
+    @Select("select info from information where table_id=#{tableId}")
+    ArrayList<String> findInfoByTableId(Integer tableId);
 
 
 }

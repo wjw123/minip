@@ -7,6 +7,9 @@ package com.orange.minip.Service;/*
 
 import com.orange.minip.DataObject.Information;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface InformationService {
     /**
      * 保存information
@@ -14,6 +17,13 @@ public interface InformationService {
      * @return
      */
     int saveInformation(Information information);
+
+    /**
+     * 获取一个表中的所有条information
+     * @param tableId
+     * @return
+     */
+    ArrayList<String> getAllInfo(Integer tableId);
 
 
 }
