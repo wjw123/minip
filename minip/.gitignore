@@ -13,6 +13,7 @@ HELP.md
 
 ### IntelliJ IDEA ###
 .idea
+/src/test/
 *.iws
 *.iml
 *.ipr
@@ -27,3 +28,4 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+src/test/java/com/orange/minip/Controller/

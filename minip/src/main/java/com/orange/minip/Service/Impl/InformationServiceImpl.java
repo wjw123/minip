@@ -10,8 +10,9 @@ import com.orange.minip.Mapper.InformationMapper;
 import com.orange.minip.Service.InformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class InformationServiceImpl implements InformationService {
@@ -27,4 +28,10 @@ public class InformationServiceImpl implements InformationService {
     public ArrayList<String> getAllInfo(Integer tableId) {
         return informationMapper.findInfoByTableId(tableId);
     }
+    @Override
+    public String getInfo(Integer tableId, String partOpenid) {
+        return informationMapper.getInfo(tableId,partOpenid);
+    }
+
+
 }

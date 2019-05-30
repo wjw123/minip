@@ -78,4 +78,35 @@ public class CreatTableController {
         response.setObject(jsonArray);
         return  response;
     }
+
+
+    /***
+     * 获取用户所创建的所有表信息
+     * @param tableCreatopenid 用户的ID
+     * @return
+     */
+    @RequestMapping(value = "/getAllCreattable",method = RequestMethod.GET)
+    public Response getAllCreattable(String tableCreatopenid){
+        Response response=new Response();
+        response.setCode(0);
+        response.setMsg("成功获取到用户所创建的所有表信息");
+        response.setObject(creatTableService.getAllCreatetable(tableCreatopenid));
+        return response;
+    }
+
+    /***
+     * 获取到用户所参与的所有表信息
+     * @param partOpenid
+     * @return
+     */
+    @RequestMapping(value = "/getAllParttable",method = RequestMethod.GET)
+    public Response getpartTable(String partOpenid){
+        Response response=new Response();
+        response.setCode(0);
+        response.setMsg("成功获取到用户所参与的所有表信息");
+        response.setObject(creatTableService.getAllParttable(partOpenid));
+        return response;
+    }
+
+
 }
