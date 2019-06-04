@@ -4,8 +4,7 @@ package com.orange.minip.Util;/*
  *@Description 导出excel文件
  *@creatTime 2019年05月29日19:46:00
  */
-
-import com.sun.deploy.net.URLEncoder;
+import java.net.URLEncoder;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
 
