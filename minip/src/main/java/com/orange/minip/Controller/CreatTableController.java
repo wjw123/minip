@@ -10,12 +10,22 @@ import com.alibaba.fastjson.JSONObject;
 import com.orange.minip.DataObject.CreatTable;
 import com.orange.minip.DataObject.Response;
 import com.orange.minip.Service.CreatTableService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +33,19 @@ import java.util.Map;
 @RestController
 @RequestMapping("/table")
 public class CreatTableController {
+
     @Autowired
     private CreatTableService creatTableService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private static String ACCESS_TOKEN="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx7daa3ff763246b27&secret=06b028e85e224673db04aa0dcbbf93b7";
+
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
 
     /**
      *  保存table信息并返回tableId
@@ -108,5 +129,85 @@ public class CreatTableController {
         return response;
     }
 
+    /***
+     * 生成二维码程序
+     * @throws IOException
+     */
+    @RequestMapping(value = "/getaccess_token")
+    public void getwxcode() throws IOException {
+        JSONObject res=restTemplate.getForObject(ACCESS_TOKEN,JSONObject.class);
+        String accessToken=(String)res.get("access_token");
+        InputStream inputStream=null;
+        OutputStream outputStream=null;
+        File file=null;
+
+        try{
+            String url="https://api.weixin.qq.com/wxa/getwxacode?access_token="+accessToken;
+
+            //生成二维码时所需要的参数
+            JSONObject param=new JSONObject();
+            param.put("path","/page/index/index");
+            param.put("width",430);//二维码的宽度
+            param.put("auto_color",false);//二维码线条的颜色
+            param.put("is_hyaline",false);  //是否需要透明底色
+            Map<String, Object> line_color = new HashMap<>();
+            line_color.put("r", 0);
+            line_color.put("g", 0);
+            line_color.put("b", 0);
+            param.put("line_color",line_color);
+
+            logger.info(">>>>>>调用生成网址url码生成入参:"+param.toString()+"<<<<<");
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+
+            //发送请求时携带的数据
+            HttpEntity requestEntity = new HttpEntity(param, headers);
+
+            ResponseEntity<byte[]>entity=restTemplate.exchange(url, HttpMethod.POST,requestEntity,byte[].class);
+
+            //生成微信小程序回参
+            logger.info(">>>>>> 调用小程序生成微信永久小程序码URL接口回参: " + entity);
+
+            //处理返回参数
+            byte[] result=entity.getBody();
+            inputStream = new ByteArrayInputStream(result);
+
+            //生成默认的文件
+            File filepath=new File("D:/temp");
+            if(!filepath.exists()){
+                filepath.mkdir();
+            }
+            file=new File(filepath+File.separator+"123"+".jpeg");
+            if(!file.exists()){
+                file.createNewFile();
+            }
+
+            //向默认的文件中写入路径并生成二维码
+            outputStream=new FileOutputStream(file);
+            inputStream = new ByteArrayInputStream(result);
+            int content=0;
+            byte[]buffer=new byte[1024*8];
+            while  ((content = inputStream.read(buffer,0,1024)) != -1) {
+                outputStream.write(buffer,0, content);
+            }
+            outputStream.flush();
+        }catch (Exception e){
+            logger.error("调用小程序接口生成二维码错误:"+e.getMessage());
+        }finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
 }

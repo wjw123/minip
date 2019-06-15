@@ -6,4 +6,5 @@ spring:
     password: timeseller
   jpa:
     show-sql: true
-
+server:
+  port: 8088

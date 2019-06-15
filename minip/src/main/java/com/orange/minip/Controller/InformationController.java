@@ -14,10 +14,7 @@ import com.orange.minip.Service.InformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/information")
@@ -53,10 +50,14 @@ public class InformationController {
     public Response getInformation(Integer tableId,String partOpenid){
         String Info=informationService.getInfo(tableId,partOpenid).substring(1,informationService.getInfo(tableId,partOpenid).length()-1);
         String[] Infos=Info.split(",");
-        JSONObject js=new JSONObject();
+        JSONObject js=new JSONObject(true);
+        int i=1;
         for(String info:Infos){
             String[]infos=info.split("=");
-            js.put(infos[0],infos[1]);
+            //js.put(infos[0],infos[1]);
+            js.put("name"+i,infos[0]);
+            js.put("content"+i,infos[1]);
+            i++;
         }
         Response response=new Response();
         response.setCode(0);
@@ -73,16 +74,32 @@ public class InformationController {
     @RequestMapping(value = "/getinformations",method = RequestMethod.GET)
     public Response getInformations(Integer tableId){
         List<String> allInfo=informationService.getAllInfo(tableId);
-        List<Map<String,Object>>lists=new ArrayList<>();
+        List<List<String>>lists=new ArrayList<>();
+
+        //设立初次
+        int i=0;
+
         for(String Info:allInfo){
+
             Info=Info.substring(1,Info.length()-1);
             String[]Infos=Info.split(",");
-            Map<String,Object>map=new HashMap<>();
+            List<String>data1=new ArrayList<>();
+            List<String>data2=new ArrayList<>();
+
             for (String info:Infos){
                 String[] infos=info.split("=");
-                map.put(infos[0],infos[1]);
+                //加入键信息
+                data1.add(infos[0]);
+                //加入值信息
+                data2.add(infos[1]);
             }
-            lists.add(map);
+
+            //只在第一次的时候加上键名称，后面则直接给值
+            if(i==0){
+            lists.add(data1);}
+
+            lists.add(data2);
+            i++;
         }
         Response response=new Response();
         response.setCode(0);
