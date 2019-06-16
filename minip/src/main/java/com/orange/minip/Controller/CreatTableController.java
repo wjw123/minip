@@ -54,6 +54,9 @@ public class CreatTableController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    //返回的url地址
+    private final static String RETURN_URL="https://statistics.fantasy512.cn/images/";
+
 
     /**
      *  保存table信息并返回tableId
@@ -142,12 +145,11 @@ public class CreatTableController {
      * @throws IOException
      */
     @RequestMapping(value = "/getWxCode",method = RequestMethod.GET)
-    public void getwxcode(HttpServletResponse response,HttpServletRequest request,String picName,String properties) throws IOException {
+    public String getwxcode(HttpServletResponse response,HttpServletRequest request,String tableId,String wxurl,String properties) throws IOException {
         JSONObject res=restTemplate.getForObject(ACCESS_TOKEN,JSONObject.class);
         String accessToken=(String)res.get("access_token");
         InputStream inputStream=null;
         OutputStream outputStream=null;
-        String scene="name,age";
         File file=null;
 
         try{
@@ -155,7 +157,7 @@ public class CreatTableController {
 
             //生成二维码时所需要的参数
             JSONObject param=new JSONObject();
-            param.put("path","/page/index/index");//扫描二维码进入的路径
+            param.put("path",wxurl);//扫描二维码进入的路径
             param.put("scene",properties);//进入页面时传递的参数
             param.put("width",430);//二维码的宽度
             param.put("auto_color",false);//二维码线条的颜色
@@ -194,7 +196,7 @@ public class CreatTableController {
                 //mkdirs才能创建多级目录
                 filepath.mkdirs();
             }
-            file=new File(filepath+File.separator+picName+".jpeg");
+            file=new File(filepath+File.separator+tableId+".jpeg");
             if(!file.exists()){
                 file.createNewFile();
             }
@@ -225,7 +227,8 @@ public class CreatTableController {
                     e.printStackTrace();
                 }
             }
-            getImage(filepathString+File.separator+file.getName(),request,response);
+           // getImage(filepathString+File.separator+file.getName(),request,response);
+            return RETURN_URL+file.getName();
         }
     }
 
