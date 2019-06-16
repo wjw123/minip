@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,6 +49,8 @@ public class CreatTableController {
     @Autowired
     private static String ACCESS_TOKEN="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx7daa3ff763246b27&secret=06b028e85e224673db04aa0dcbbf93b7";
 
+    @Value("${web.images-path}")
+    private String filepathString;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -133,12 +141,13 @@ public class CreatTableController {
      * 生成二维码程序
      * @throws IOException
      */
-    @RequestMapping(value = "/getaccess_token")
-    public void getwxcode() throws IOException {
+    @RequestMapping(value = "/getWxCode",method = RequestMethod.GET)
+    public void getwxcode(HttpServletResponse response,HttpServletRequest request,String picName,String properties) throws IOException {
         JSONObject res=restTemplate.getForObject(ACCESS_TOKEN,JSONObject.class);
         String accessToken=(String)res.get("access_token");
         InputStream inputStream=null;
         OutputStream outputStream=null;
+        String scene="name,age";
         File file=null;
 
         try{
@@ -146,7 +155,8 @@ public class CreatTableController {
 
             //生成二维码时所需要的参数
             JSONObject param=new JSONObject();
-            param.put("path","/page/index/index");
+            param.put("path","/page/index/index");//扫描二维码进入的路径
+            param.put("scene",properties);//进入页面时传递的参数
             param.put("width",430);//二维码的宽度
             param.put("auto_color",false);//二维码线条的颜色
             param.put("is_hyaline",false);  //是否需要透明底色
@@ -162,7 +172,14 @@ public class CreatTableController {
             //发送请求时携带的数据
             HttpEntity requestEntity = new HttpEntity(param, headers);
 
-            ResponseEntity<byte[]>entity=restTemplate.exchange(url, HttpMethod.POST,requestEntity,byte[].class);
+            //ResponseEntity<byte[]>entity=restTemplate.exchange(url, HttpMethod.POST,requestEntity,byte[].class);
+
+            //发送请求并获取返回到的JSONObject
+           //JSONObject return_json=restTemplate.postForObject(url,requestEntity,JSONObject.class);
+
+            //logger.info(">>>>>>>>>>>>获取返回的数据:"+return_json);
+
+            ResponseEntity<byte[]> entity = restTemplate.exchange(url,HttpMethod.POST,requestEntity,byte[].class);
 
             //生成微信小程序回参
             logger.info(">>>>>> 调用小程序生成微信永久小程序码URL接口回参: " + entity);
@@ -172,11 +189,12 @@ public class CreatTableController {
             inputStream = new ByteArrayInputStream(result);
 
             //生成默认的文件
-            File filepath=new File("D:/temp");
+            File filepath=new File(filepathString);
             if(!filepath.exists()){
-                filepath.mkdir();
+                //mkdirs才能创建多级目录
+                filepath.mkdirs();
             }
-            file=new File(filepath+File.separator+"123"+".jpeg");
+            file=new File(filepath+File.separator+picName+".jpeg");
             if(!file.exists()){
                 file.createNewFile();
             }
@@ -207,7 +225,31 @@ public class CreatTableController {
                     e.printStackTrace();
                 }
             }
+            getImage(filepathString+File.separator+file.getName(),request,response);
         }
+    }
+
+    //返回图片的IO流
+    public void getImage(String url, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        ServletOutputStream out=null;
+        FileInputStream ips=null;
+        try {
+          ips = new FileInputStream(new File(url));
+          out = response.getOutputStream();
+
+          //读取流文件
+          int len = 0;
+          byte[] buffer = new byte[1024 * 10];
+          while ((len = ips.read(buffer)) != -1) {
+              out.write(buffer, 0, len);
+          }
+          out.flush();
+      }catch (Exception e){
+          e.printStackTrace();
+      }finally {
+            ips.close();
+            out.close();
+      }
     }
 
 }
