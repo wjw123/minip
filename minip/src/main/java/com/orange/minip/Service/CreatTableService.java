@@ -45,4 +45,19 @@ public interface CreatTableService {
      * @return
      */
     String getContent(Integer tableId);
+
+    /***
+     * 根据tableId返回table信息，修改用
+     * @param tableId
+     * @return
+     */
+    CreatTable getCreateTableById(Integer tableId);
+
+
+    /***
+     * 修改表格
+     * @param creatTable
+     * @return
+     */
+    int updateTable(CreatTable creatTable);
 }

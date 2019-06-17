@@ -44,6 +44,19 @@ public class CreatTableServiceImpl implements CreatTableService {
        return creatTableMapper.getTable(tableId);
     }
 
+    @Override
+
+    public CreatTable getCreateTableById(Integer tableId) {
+        CreatTable creatTable=creatTableMapper.getCreateTableById(tableId);
+        creatTable.setTableContent(creatTable.getTableContent().substring(1,creatTable.getTableContent().length()-1));
+        return creatTable;
+    }
+
+    @Override
+    public int updateTable(CreatTable creatTable) {
+        return creatTableMapper.updateTable(creatTable);
+    }
+
     /***
      * 获取用户所创建的所有表信息
      * @param tableCreatopenid

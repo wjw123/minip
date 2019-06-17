@@ -18,6 +18,14 @@ public class CreatTable implements Serializable {
         this.tableCreatopenid = tableCreatopenid;
         this.tableContent = tableContent;
     }
+
+    public CreatTable(String tableTitle, String tableDeadline, Integer tableId, String tableContent) {
+        this.tableTitle = tableTitle;
+        this.tableDeadline = tableDeadline;
+        this.tableId=tableId;
+        this.tableContent = tableContent;
+    }
+
     public CreatTable(){
 
     }

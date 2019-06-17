@@ -27,6 +27,15 @@ public interface CreatTableMapper {
             useGeneratedKeys = true, keyProperty = "tableId",keyColumn="table_id")
     int savaTable(CreatTable creatTable);
 
+
+    /***
+     * 修改表格的信息
+     * @param creatTable
+     * @return
+     */
+    @Update("update creat_table set table_title=#{tableTitle},table_deadline=#{tableDeadline},table_content=#{tableContent} where table_id=#{tableId}")
+    int updateTable(CreatTable creatTable);
+
     /**
      * 获取某一个table填写的总人数
      * @param tableId
@@ -70,6 +79,21 @@ public interface CreatTableMapper {
 
     @Select("select table_content as 'tableContent' from creat_table where table_id=#{tableId}")
     String getTable(Integer tableId);
+
+    /***
+     * 根据tableId获取返回信息，修改用
+     * @param tableId
+     * @return
+     */
+    @Select("select * from creat_table where table_id=#{tableId}")
+    @Options(flushCache = Options.FlushCachePolicy.TRUE,timeout=10000)
+    //需要设置Results注解来实现字段名和属性名的一一对应
+    @Results({@Result(property = "tableId", column = "table_id", javaType=Integer.class),
+            @Result(property = "tableTitle", column = "table_title",javaType = String.class),
+            @Result(property = "tableDeadline", column = "table_deadline",javaType = String.class),
+            @Result(property = "tableCreatopenid", column = "table_creatopenid",javaType = String.class),
+            @Result(property = "tableContent", column = "table_content",javaType = String.class)})
+    CreatTable getCreateTableById(Integer tableId);
 
 
 }

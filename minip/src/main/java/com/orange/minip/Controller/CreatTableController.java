@@ -141,11 +141,48 @@ public class CreatTableController {
     }
 
     /***
+     * 表格ID获取表格信息，修改用
+     * @param tableId
+     * @return
+     */
+    @RequestMapping(value = "/getCreateTableById",method = RequestMethod.GET)
+    public Response getCreateTableById(Integer tableId){
+        CreatTable creatTable=creatTableService.getCreateTableById(tableId);
+        Response response=new Response();
+        response.setCode(0);
+        response.setMsg("成功获取到表格信息");
+        response.setObject(creatTable);
+        return  response;
+    }
+
+    /***
+     * 修改表格数据
+     * @param tableJson
+     * @return
+     */
+    @RequestMapping(value = "/updatetable",method = RequestMethod.POST)
+    public Response updateTable(@RequestBody JSONObject tableJson){
+        Response response=new Response();
+        Map<String,Object> map=new HashMap<>();
+        String tableTitle=tableJson.getString("tableTitle");
+        String tableDeadline=tableJson.getString("tableDeadline");
+        Integer tableId=tableJson.getInteger("tableId");
+        String tableContent=tableJson.getString("tableContent");
+        CreatTable creatTable=new CreatTable(tableTitle,tableDeadline,tableId,tableContent);
+        creatTableService.updateTable(creatTable);
+        map.put("tableId",tableId);
+        response.setCode(0);
+        response.setMsg("成功修改信息");
+        response.setObject(map);
+        return response;
+    }
+
+    /***
      * 生成二维码程序
      * @throws IOException
      */
     @RequestMapping(value = "/getWxCode",method = RequestMethod.GET)
-    public String getwxcode(HttpServletResponse response,HttpServletRequest request,String tableId,String wxurl,String properties) throws IOException {
+    public String getwxcode(HttpServletResponse response,HttpServletRequest request,String tableId,String wxurl) throws IOException {
         JSONObject res=restTemplate.getForObject(ACCESS_TOKEN,JSONObject.class);
         String accessToken=(String)res.get("access_token");
         InputStream inputStream=null;
@@ -153,12 +190,12 @@ public class CreatTableController {
         File file=null;
 
         try{
-            String url="https://api.weixin.qq.com/wxa/getwxacode?access_token="+accessToken;
+            String url="https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken;
 
             //生成二维码时所需要的参数
             JSONObject param=new JSONObject();
             param.put("path",wxurl);//扫描二维码进入的路径
-            param.put("scene",properties);//进入页面时传递的参数
+            param.put("scene",tableId);//进入页面时传递的参数
             param.put("width",430);//二维码的宽度
             param.put("auto_color",false);//二维码线条的颜色
             param.put("is_hyaline",false);  //是否需要透明底色
