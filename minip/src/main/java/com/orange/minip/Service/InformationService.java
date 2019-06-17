@@ -34,4 +34,10 @@ public interface InformationService {
     String getInfo(Integer tableId,String partOpenid);
 
 
+    /***
+     * 根据表格ID删除填写信息
+     * @param tableId
+     * @return
+     */
+    int deleteInfoByTable(Integer tableId);
 }

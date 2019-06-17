@@ -57,6 +57,11 @@ public class CreatTableServiceImpl implements CreatTableService {
         return creatTableMapper.updateTable(creatTable);
     }
 
+    @Override
+    public int deleteTable(Integer tableId) {
+        return creatTableMapper.deleteTable(tableId);
+    }
+
     /***
      * 获取用户所创建的所有表信息
      * @param tableCreatopenid

@@ -33,5 +33,10 @@ public class InformationServiceImpl implements InformationService {
         return informationMapper.getInfo(tableId,partOpenid);
     }
 
+    @Override
+    public int deleteInfoByTable(Integer tableId) {
+        return informationMapper.deleteInfoByTable(tableId);
+    }
+
 
 }

@@ -36,6 +36,14 @@ public interface CreatTableMapper {
     @Update("update creat_table set table_title=#{tableTitle},table_deadline=#{tableDeadline},table_content=#{tableContent} where table_id=#{tableId}")
     int updateTable(CreatTable creatTable);
 
+    /***
+     * 删除表格的信息
+     * @param tableId 表格ID
+     * @return
+     */
+    @Delete("delete from creat_table where table_id=#{tableId}")
+    Integer deleteTable(Integer tableId);
+
     /**
      * 获取某一个table填写的总人数
      * @param tableId

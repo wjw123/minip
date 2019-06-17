@@ -48,5 +48,13 @@ public interface InformationMapper {
     @Select("select info from information where table_id=#{tableId} and part_openid=#{partOpenid}")
     String getInfo(Integer tableId,String partOpenid);
 
+    /***
+     * 根据表格ID删除对应填写的信息
+     * @param tableId
+     * @return
+     */
+    @Delete("delete from information where table_id=#{tableId}")
+    int deleteInfoByTable(Integer tableId);
+
 
 }

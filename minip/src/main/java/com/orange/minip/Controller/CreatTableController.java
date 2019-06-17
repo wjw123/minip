@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.orange.minip.DataObject.CreatTable;
 import com.orange.minip.DataObject.Response;
 import com.orange.minip.Service.CreatTableService;
+import com.orange.minip.Service.InformationService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,9 @@ public class CreatTableController {
 
     @Autowired
     private CreatTableService creatTableService;
+
+    @Autowired
+    private InformationService informationService;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -174,6 +178,22 @@ public class CreatTableController {
         response.setCode(0);
         response.setMsg("成功修改信息");
         response.setObject(map);
+        return response;
+    }
+
+    /***
+     * 删除表格信息
+     * @param tableId
+     * @return
+     */
+    @RequestMapping(value = "/deletetable",method = RequestMethod.GET)
+    public Response deleteTable(Integer tableId){
+        int result=creatTableService.deleteTable(tableId);
+        int inforesult=informationService.deleteInfoByTable(tableId);
+        Response response=new Response();
+        response.setCode(0);
+        response.setMsg("成功删除表格信息");
+        response.setObject(Integer.valueOf(result));
         return response;
     }
 

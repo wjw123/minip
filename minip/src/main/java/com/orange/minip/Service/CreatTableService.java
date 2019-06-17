@@ -60,4 +60,11 @@ public interface CreatTableService {
      * @return
      */
     int updateTable(CreatTable creatTable);
+
+    /***
+     * 删除表格信息
+     * @param tableId 表格ID
+     * @return
+     */
+    int deleteTable(Integer tableId);
 }
