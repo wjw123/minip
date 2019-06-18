@@ -220,7 +220,7 @@ public class CreatTableController {
         File file=null;
 
         try{
-            String url="https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken;
+            String url="https://api.weixin.qq.com/wxa/getwxacode?access_token="+accessToken;
 
             //生成二维码时所需要的参数
             JSONObject param=new JSONObject();
@@ -244,9 +244,9 @@ public class CreatTableController {
             //ResponseEntity<byte[]>entity=restTemplate.exchange(url, HttpMethod.POST,requestEntity,byte[].class);
 
             //发送请求并获取返回到的JSONObject
-           //JSONObject return_json=restTemplate.postForObject(url,requestEntity,JSONObject.class);
+          // JSONObject return_json=restTemplate.postForObject(url,requestEntity,JSONObject.class);
 
-            //logger.info(">>>>>>>>>>>>获取返回的数据:"+return_json);
+            // logger.info(">>>>>>>>>>>>获取返回的数据:"+return_json);
 
             ResponseEntity<byte[]> entity = restTemplate.exchange(url,HttpMethod.POST,requestEntity,byte[].class);
 
