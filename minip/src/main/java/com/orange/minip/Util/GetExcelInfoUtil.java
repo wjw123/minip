@@ -13,22 +13,18 @@ public class GetExcelInfoUtil {
         ArrayList<ArrayList<String>> allInfoList=new ArrayList<ArrayList<String>>(){};
         for(int i=0;i<stringList.size();i++){
             String string=stringList.get(i).substring(1,stringList.get(i).length()-1);
-            String[] infoArray=string.split("=|,");
+            String[] infoArray=string.split(",");
             ArrayList<String> infoList=new ArrayList<>();
-            for(int j=1;j<infoArray.length;j+=2){
+            for(int j=0;j<infoArray.length;j++){
                 infoList.add(infoArray[j]);
             }
             allInfoList.add(infoList);
         }
         return allInfoList;
     }
-    public static String[] getExcelHeader(List<String> stringList){
-            String string=stringList.get(0).substring(1,stringList.get(0).length()-1);
-            String[] infoArray=string.split("=|,");
-            String[] excelHeader=new String[infoArray.length/2];
-            for(int j=0,k=0;j<infoArray.length;j+=2,k++){
-                    excelHeader[k]=infoArray[j];
-            }
-            return excelHeader;
+    public static String[] getExcelHeader(String stringHeader){
+        String string=stringHeader.substring(1,stringHeader.length()-1);
+        String[] excelHeader=string.split(",");
+        return excelHeader;
     }
 }

@@ -220,15 +220,14 @@ public class CreatTableController {
         File file=null;
 
         try{
-            String url="https://api.weixin.qq.com/wxa/getwxacode?access_token="+accessToken;
+            String url="https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken;
 
             //生成二维码时所需要的参数
             JSONObject param=new JSONObject();
-            param.put("path",wxurl);//扫描二维码进入的路径
+            param.put("page",wxurl);//扫描二维码进入的路径
             param.put("scene","tableId="+tableId);//进入页面时传递的参数
             param.put("width",430);//二维码的宽度
             param.put("auto_color",false);//二维码线条的颜色
-            param.put("is_hyaline",false);  //是否需要透明底色
             Map<String, Object> line_color = new HashMap<>();
             line_color.put("r", 0);
             line_color.put("g", 0);

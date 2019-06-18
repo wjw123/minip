@@ -6,6 +6,7 @@ package com.orange.minip.Controller;/*
  */
 
 import com.orange.minip.DataObject.Response;
+import com.orange.minip.Service.CreatTableService;
 import com.orange.minip.Service.InformationService;
 import com.orange.minip.Util.ExportExcelUtil;
 import com.orange.minip.Util.GetExcelInfoUtil;
@@ -22,20 +23,23 @@ import java.util.TimeZone;
 
 @RestController
 @RequestMapping("/excel")
-public class ExcelController {
+public class ExcelController{
     @Autowired
     InformationService informationService;
+    @Autowired
+    CreatTableService creatTableService;
     @RequestMapping(value = "/getexcel",method = RequestMethod.GET)
     public Response getExcel(HttpServletResponse httpServletResponse,Integer tableId){
         List<String> stringList=informationService.getAllInfo(tableId);
+        String excelHeader=creatTableService.getContent(tableId);
         TimeZone timeZone=TimeZone.getTimeZone("GMT+8:00");
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMddHHmm");
         simpleDateFormat.setTimeZone(timeZone);
         String fileName=simpleDateFormat.format(new Date()).toString();
         Response response=new Response();
         try {
-          ExportExcelUtil.exportExcel(httpServletResponse,fileName,
-                    GetExcelInfoUtil.getExcelHeader(stringList),GetExcelInfoUtil.getExcelDataList(stringList));
+            ExportExcelUtil.exportExcel(httpServletResponse,fileName,
+                    GetExcelInfoUtil.getExcelHeader(excelHeader),GetExcelInfoUtil.getExcelDataList(stringList));
         } catch (Exception e) {
             response.setCode(1);
             response.setMsg("生成excel失败");
