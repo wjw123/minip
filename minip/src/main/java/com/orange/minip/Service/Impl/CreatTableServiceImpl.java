@@ -45,11 +45,8 @@ public class CreatTableServiceImpl implements CreatTableService {
     }
 
     @Override
-
     public CreatTable getCreateTableById(Integer tableId) {
-        CreatTable creatTable=creatTableMapper.getCreateTableById(tableId);
-        creatTable.setTableContent(creatTable.getTableContent().substring(1,creatTable.getTableContent().length()-1));
-        return creatTable;
+        return creatTableMapper.getCreateTableById(tableId);
     }
 
     @Override

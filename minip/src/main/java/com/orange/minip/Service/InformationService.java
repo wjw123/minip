@@ -40,4 +40,20 @@ public interface InformationService {
      * @return
      */
     int deleteInfoByTable(Integer tableId);
+
+    /***
+     * 修改填写信息
+     * @param information
+     * @return
+     */
+    int updateInformation(Information information);
+
+
+    /***
+     * 获取是否有数据
+     * @param tableId
+     * @param partOpenid
+     * @return
+     */
+    int getCount(Integer tableId,String partOpenid);
 }

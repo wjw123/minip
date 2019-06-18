@@ -6,10 +6,12 @@ package com.orange.minip.Controller;/*
  */
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.orange.minip.DataObject.CreatTable;
 import com.orange.minip.DataObject.Information;
 import com.orange.minip.DataObject.Response;
+import com.orange.minip.Service.CreatTableService;
 import com.orange.minip.Service.InformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ import java.util.*;
 public class InformationController {
     @Autowired
     private InformationService informationService;
+
+    @Autowired
+    private CreatTableService creatTableService;
 
     /**
      * 保存信息
@@ -37,6 +42,36 @@ public class InformationController {
         Response response=new Response();
         response.setCode(0);
         response.setMsg("保存成功");
+        return response;
+    }
+
+    /***
+     * 修改填表信息
+     * @param informationJson
+     * @return
+     */
+    @RequestMapping(value = "/updateinformation",method = RequestMethod.POST)
+    public Response updateInformation(@RequestBody JSONObject informationJson){
+        Integer tableId=Integer.valueOf(informationJson.getString("tableid"));
+        String partOpenid=informationJson.getString("openId");
+        JSONArray content=informationJson.getJSONArray("content");
+
+        List<String>newContent=new ArrayList<>();
+
+        String[] tablecontent=creatTableService.getContent(tableId).substring(1,creatTableService.getContent(tableId).length()-1).split(",");
+        int i=0;
+        for(Object contentmsg:content){
+            newContent.add(tablecontent[i]+"="+contentmsg);
+            i++;
+        }
+
+        Information information=new Information(tableId,partOpenid,String.valueOf(newContent).replace(" ",""));
+        int result=informationService.updateInformation(information);
+
+        Response response=new Response();
+        response.setCode(0);
+        response.setMsg("成功修改填表信息");
+        response.setObject(Integer.valueOf(result));
         return response;
     }
 

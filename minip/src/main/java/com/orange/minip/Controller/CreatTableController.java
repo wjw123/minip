@@ -33,9 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/table")
@@ -103,7 +101,7 @@ public class CreatTableController {
      * @param tableId
      * @return
      */
-    @RequestMapping(value = "/getContent",method = RequestMethod.POST)
+    @RequestMapping(value = "/getContent",method = RequestMethod.GET)
     public Response getContent(Integer tableId){
         String contentString=creatTableService.getContent(tableId).substring(1,creatTableService.getContent(tableId).length()-1);
         String[] strings=contentString.split(",");
@@ -152,10 +150,22 @@ public class CreatTableController {
     @RequestMapping(value = "/getCreateTableById",method = RequestMethod.GET)
     public Response getCreateTableById(Integer tableId){
         CreatTable creatTable=creatTableService.getCreateTableById(tableId);
+        JSONObject js=new JSONObject();
+        List<Map<String,Object>>data=new ArrayList<>();
+        String[] names=creatTable.getTableContent().substring(1,creatTable.getTableContent().length()-1).split(",");
+
+        for (String name:names){
+            Map<String,Object>map=new HashMap<>();
+            map.put("name",name);
+            data.add(map);
+        }
+
+        js.put("titleArray",data);
+
         Response response=new Response();
         response.setCode(0);
         response.setMsg("成功获取到表格信息");
-        response.setObject(creatTable);
+        response.setObject(js);
         return  response;
     }
 
@@ -215,7 +225,7 @@ public class CreatTableController {
             //生成二维码时所需要的参数
             JSONObject param=new JSONObject();
             param.put("path",wxurl);//扫描二维码进入的路径
-            param.put("scene",tableId);//进入页面时传递的参数
+            param.put("scene","tableId="+tableId);//进入页面时传递的参数
             param.put("width",430);//二维码的宽度
             param.put("auto_color",false);//二维码线条的颜色
             param.put("is_hyaline",false);  //是否需要透明底色

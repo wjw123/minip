@@ -7,7 +7,6 @@ package com.orange.minip.Mapper;/*
 
 
 import com.orange.minip.DataObject.Information;
-import com.orange.minip.DataObject.ResponseInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.*;
@@ -28,6 +27,14 @@ public interface InformationMapper {
     @Options(flushCache=Options.FlushCachePolicy.TRUE,timeout = 10000,
             useGeneratedKeys =true,keyProperty = "infoId",keyColumn = "info_id")
     int savaInfomation(Information information);
+
+    /****
+     * 修改Information中的信息
+     * @param information
+     * @return
+     */
+    @Update("update information set info=#{info} where table_id=#{tableId} and part_openid=#{partOpenid}")
+    int updateInfomation(Information information);
 
 
     /**
@@ -56,5 +63,13 @@ public interface InformationMapper {
     @Delete("delete from information where table_id=#{tableId}")
     int deleteInfoByTable(Integer tableId);
 
+    /***
+     * 获取是否有数据
+     * @param tableId
+     * @param partOpenid
+     * @return
+     */
+    @Select("select count(*) from information where table_id=#{tableId} and part_openid=#{partOpenid}")
+    int getCount(Integer tableId,String partOpenid);
 
 }
