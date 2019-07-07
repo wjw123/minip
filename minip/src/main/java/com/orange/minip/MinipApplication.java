@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(basePackages = "com.orange.minip.Mapper")
 @SpringBootApplication
 public class MinipApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(MinipApplication.class, args);
     }
