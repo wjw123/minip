@@ -151,6 +151,7 @@ public class CreatTableController {
     public Response getCreateTableById(Integer tableId){
         CreatTable creatTable=creatTableService.getCreateTableById(tableId);
         JSONObject js=new JSONObject();
+        if(creatTable!=null){
         List<Map<String,Object>>data=new ArrayList<>();
         String[] names=creatTable.getTableContent().substring(1,creatTable.getTableContent().length()-1).split(",");
 
@@ -160,7 +161,7 @@ public class CreatTableController {
             data.add(map);
         }
 
-        js.put("titleArray",data);
+        js.put("titleArray",data);}
 
         Response response=new Response();
         response.setCode(0);
@@ -225,7 +226,7 @@ public class CreatTableController {
             //生成二维码时所需要的参数
             JSONObject param=new JSONObject();
             param.put("page",wxurl);//扫描二维码进入的路径
-            param.put("scene","tableId="+tableId);//进入页面时传递的参数
+            param.put("scene",tableId);//进入页面时传递的参数
             param.put("width",430);//二维码的宽度
             param.put("auto_color",false);//二维码线条的颜色
             Map<String, Object> line_color = new HashMap<>();

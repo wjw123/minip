@@ -54,18 +54,11 @@ public class InformationController {
     public Response updateInformation(@RequestBody JSONObject informationJson){
         Integer tableId=Integer.valueOf(informationJson.getString("tableid"));
         String partOpenid=informationJson.getString("openId");
-        JSONArray content=informationJson.getJSONArray("content");
 
-        List<String>newContent=new ArrayList<>();
+        String content=informationJson.getString("content");
 
-        String[] tablecontent=creatTableService.getContent(tableId).substring(1,creatTableService.getContent(tableId).length()-1).split(",");
-        int i=0;
-        for(Object contentmsg:content){
-            newContent.add(tablecontent[i]+"="+contentmsg);
-            i++;
-        }
 
-        Information information=new Information(tableId,partOpenid,String.valueOf(newContent).replace(" ",""));
+        Information information=new Information(tableId,partOpenid,content.replace(" ",""));
         int result=informationService.updateInformation(information);
 
         Response response=new Response();
@@ -86,22 +79,17 @@ public class InformationController {
         String Info=informationService.getInfo(tableId,partOpenid)==null?null:informationService.getInfo(tableId,partOpenid).substring(1,informationService.getInfo(tableId,partOpenid).length()-1);
         JSONObject js=new JSONObject(true);
         if(Info!=null){
-        String[] Infos=Info.split(",");
-        //存储键名
-        List<Map<String,String>>titleArray=new ArrayList<>();
-        //存储值名
-        List<String>contentArray=new ArrayList<>();
-        for(String info:Infos){
-            Map<String,String>title=new HashMap<>();
-            String[]infos=info.split("=");
-            title.put("name",infos[0]);
-            //存储值
-            contentArray.add(infos[1]);
-            //存储键名
-            titleArray.add(title);
-        }
-        js.put("titleArray",titleArray);
-        js.put("contentArray",contentArray);
+            String []contentArray=Info.split(",");
+            String content=creatTableService.getContent(tableId)==null?null:creatTableService.getContent(tableId).substring(1,creatTableService.getContent(tableId).length()-1);
+            String[]contents=content.split(",");
+            List<Map<String,String>>titleArray=new ArrayList<>();
+            for(String con:contents){
+                Map<String,String>map=new HashMap<>();
+                map.put("name",con);
+                titleArray.add(map);
+            }
+            js.put("titleArray",titleArray);
+            js.put("contentArray",contentArray);
         }
         Response response=new Response();
         response.setCode(0);
@@ -117,39 +105,40 @@ public class InformationController {
      */
     @RequestMapping(value = "/getinformations",method = RequestMethod.GET)
     public Response getInformations(Integer tableId){
-        List<String> allInfo=informationService.getAllInfo(tableId);
-        JSONObject js=new JSONObject();
+        JSONObject js=new JSONObject(true);
 
-        //设立初次
-        int i=0;
-        //存储键名
+        //从数据库查值
+        List<String> allInfo=informationService.getAllInfo(tableId);
+
+        //从数据库查键
+        String content=creatTableService.getContent(tableId)==null?null:creatTableService.getContent(tableId).substring(1,creatTableService.getContent(tableId).length()-1);
+
+        //所有的键信息
         List<Map<String,String>>titleArray=new ArrayList<>();
-        //存储值名
+
+        //所有的值信息
         List<List<String>>contentArray=new ArrayList<>();
 
-        for(String Info:allInfo){
-            List<String>content=new ArrayList<>();
-            Info=Info.substring(1,Info.length()-1);
-            String[]Infos=Info.split(",");
-
-            for (String info:Infos){
-                String[] infos=info.split("=");
-                //加入键信息
-                if(i==0) {
-                    Map<String,String>title=new HashMap<>();
-                    title.put("name",infos[0]);
-                    titleArray.add(title);
-                }
-                //加入值信息
-                content.add(infos[1]);
+        if(content!=null){
+            //获取所有的值信息
+            for(String info:allInfo){
+                String[]infos=info.substring(1,info.length()-1).split(",");
+                List<String>infosList=Arrays.asList(infos);
+                contentArray.add(infosList);
             }
 
-            contentArray.add(content);
-            //只在第一次的时候加上键名称，后面则直接给值
-            i++;
+            //获取所有键信息
+            String[]contents=content.split(",");
+            for(String con:contents){
+                Map<String,String>map=new HashMap<>();
+                map.put("name",con);
+                titleArray.add(map);
+            }
+
+            js.put("titleArray",titleArray);
+            js.put("contentArray",contentArray);
         }
-        js.put("titleArray",titleArray);
-        js.put("contentArray",contentArray);
+
         Response response=new Response();
         response.setCode(0);
         response.setMsg("成功获取到所有填表信息");
